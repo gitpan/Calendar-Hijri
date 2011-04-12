@@ -9,11 +9,11 @@ Calendar::Hijri - Interface to Islamic calendar (Hijri).
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Carp;
 use Readonly;
@@ -484,10 +484,10 @@ sub _validate_date
 
     croak("ERROR: Invalid year [$yyyy].\n")
         unless (defined($yyyy) && ($yyyy =~ /^\d{4}$/) && ($yyyy > 0));
-    croak("ERROR: Invalid month number [$mm].\n")
-        unless (defined($mm) && ($mm =~ /^\d{1,2}$/) && ($mm >= 1 || $mm <= 12));
-    croak("ERROR: Invalid day number [$dd].\n")
-        unless (defined($dd) && ($dd =~ /^\d{1,2}$/) && ($dd >= 1 || $mm <= 30));
+    croak("ERROR: Invalid month [$mm].\n")
+        unless (defined($mm) && ($mm =~ /^\d{1,2}$/) && ($mm >= 1) && ($mm <= 12));
+    croak("ERROR: Invalid day [$dd].\n")
+        unless (defined($dd) && ($dd =~ /^\d{1,2}$/) && ($dd >= 1) && ($dd <= 30));
 }
 
 =head1 AUTHOR

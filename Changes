@@ -1,4 +1,8 @@
 Revision history for Calendar-Hijri
 
+0.02    Tue Apr 12 12:37:37 2011
+        - Fixed the internal method _validate_date().
+        - Added unit test 01-test-case.t
+
 0.01    Mon Apr 11 18:34:23 2011
         - First version released.
