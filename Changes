@@ -1,5 +1,14 @@
 Revision history for Calendar-Hijri
 
+0.03    Mon Apr 18 15:52:00 2011
+        - Renamed title "SYNOPSIS" to "DESCRIPTION".
+        - Renamed method days_in_year_month() to days_in_month().
+        - Renamed methos days_up_until_year_month() to days_so_far().
+        - Added example pod for method from_gregorian().
+        - Added example pod for method to_gregorian().
+        - Added example pod for method to_julian().
+        - Cosmetics changes.
+
 0.02    Tue Apr 12 12:37:37 2011
         - Fixed the internal method _validate_date().
         - Added unit test 01-test-case.t

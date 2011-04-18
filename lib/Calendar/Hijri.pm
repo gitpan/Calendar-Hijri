@@ -5,15 +5,15 @@ use strict;
 
 =head1 NAME
 
-Calendar::Hijri - Interface to Islamic calendar (Hijri).
+Calendar::Hijri - Interface to Islamic calendar.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Carp;
 use Readonly;
@@ -61,38 +61,39 @@ sub new
     return $self;
 }
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-Hijri Calendar begins with the migration from Mecca to Medina of Mohammad, the Prophet of Islam, an 
-event  known  as the Hegira. The initials A.H. before a date mean "anno Hegirae" or "after Hegira". 
-The first day of the year is fixed in the Quran as the first day of the month of Muharram. In 17 AH 
-Umar I, the second caliph, established the beginning of the era of the Hegira (1 Muharram 1 AH)  as 
-the date that is 16 July 622 CE in the Julian Calendar.
+Hijri Calendar begins with the migration from Mecca to Medina of Mohammad (pbuh),  the Prophet 
+of Islam, an event  known  as the Hegira. The initials A.H.  before a date mean "anno Hegirae" 
+or "after Hegira".  The  first  day  of the year is fixed in the Quran as the first day of the 
+month of Muharram. In 17 AH Umar I, the second caliph, established the beginning of the era of 
+the Hegira (1 Muharram 1 AH) as the date that is 16 July 622 CE in the Julian Calendar.
 
-The years are lunar and consist of 12 lunar months. There is no intercalary period, since the Quran 
-(Sura IX, verses 36,37) sets the calendar year at 12 months. Because the year in the Hijri calendar 
-is shorter than a solar year, the months drift with respect to the seasons, in a cycle 32.50 years.
+The  years are lunar and consist of 12 lunar months. There is no intercalary period, since the 
+Quran ( Sura IX, verses 36,37 )  sets  the calendar year at 12 months. Because the year in the 
+Hijri  calendar is shorter than a solar year, the months drift with respect to the seasons, in 
+a cycle 32.50 years.
 
 NOTE: The Hijri date produced by this module can have +1/-1 day error.
 
-=head2 Month Names
+=head1 MONTHS
 
-    -----------------------------
-    | Number |    Name          |
-    -----------------------------
-    |   1    |  Muharram        |
-    |   2    |  Safar           |
-    |   3    |  Rabi' al-awwal  |
-    |   4    |  Rabi' al-thani  |
-    |   5    |  Jumada al-awwal |
-    |   6    |  Jumada al-thani |  
-    |   7    |  Rajab           |
-    |   8    |  Sha'aban        |
-    |   9    |  Ramadan         |
-    |  10    |  Shawwal         |
-    |  11    |  Dhu al-Qi'dah   |
-    |  12    |  Dhu al-Hijjah   |
-    -----------------------------
+    +--------+-----------------+
+    | Number | Name            |
+    +--------+-----------------+
+    |   1    | Muharram        |
+    |   2    | Safar           |
+    |   3    | Rabi' al-awwal  |
+    |   4    | Rabi' al-thani  |
+    |   5    | Jumada al-awwal |
+    |   6    | Jumada al-thani |  
+    |   7    | Rajab           |
+    |   8    | Sha'aban        |
+    |   9    | Ramadan         |
+    |  10    | Shawwal         |
+    |  11    | Dhu al-Qi'dah   |
+    |  12    | Dhu al-Hijjah   |
+    +--------+-----------------+
 
 =head1 METHODS
 
@@ -191,7 +192,7 @@ sub days_in_year
     (return 354);
 }
 
-=head2 days_in_year_month
+=head2 days_in_month()
 
 Return number of days in the given year and month of Hijri Calendar.
 
@@ -199,13 +200,13 @@ Return number of days in the given year and month of Hijri Calendar.
     use Calendar::Hijri;
 
     my $calendar = Calendar::Hijri->new(1432,7,26);
-    print "Days is Rajab   1432: [" . $calendar->days_in_year_month() . "]\n";
+    print "Days is Rajab   1432: [" . $calendar->days_in_month() . "]\n";
 
-    print "Days is Shawwal 1432: [" . $calendar->days_in_year_month(1432, 8) . "]\n";
+    print "Days is Shawwal 1432: [" . $calendar->days_in_month(1432, 8) . "]\n";
 
 =cut
 
-sub days_in_year_month
+sub days_in_month
 {
     my $self = shift;
     my $yyyy = shift;
@@ -220,17 +221,17 @@ sub days_in_year_month
     return 29;
 }
 
-=head2 days_up_until_year_month(yyyy, mm)
+=head2 days_so_far()
 
     use strict; use warnings;
     use Calendar::Hijri;
     
     my $calendar = Calendar::Hijri->new(1432, 7, 27);
-    print "Total number of days up until Rajab 1432: " . $calendar->days_up_until_year_month() . "\n";
+    print "Days before 01 Rajab 1432: " . $calendar->days_so_far() . "\n";
 
 =cut
 
-sub days_up_until_year_month
+sub days_so_far
 {
     my $self = shift;
     my $yyyy = shift;
@@ -243,7 +244,7 @@ sub days_up_until_year_month
     my $days = 0;
     foreach (1..$mm) 
     {
-        $days += $self->days_in_year_month($yyyy, $_);
+        $days += $self->days_in_month($yyyy, $_);
     }
     return $days;
 }
@@ -275,15 +276,15 @@ sub add_day
     
     foreach (1..$day)
     {
-        ($dd, $mm, $yyyy) = _add_day($self->days_in_year_month($yyyy, $mm), $dd, $mm, $yyyy);
+        ($dd, $mm, $yyyy) = _add_day($self->days_in_month($yyyy, $mm), $dd, $mm, $yyyy);
     }
     return ($dd, $mm, $yyyy);
 }
 
 =head2 get_calendar()
 
-Return Hijri Calendar for the given month and year. In case of missing month and year, it would return
-current month Hijri Calendar.
+Return  Hijri  Calendar  for the given month and year. In case of missing  month  and year, it 
+would return current month Hijri Calendar.
 
     use strict; use warnings;
     use Calendar::Hijri;
@@ -307,7 +308,7 @@ sub get_calendar
     $calendar .= "\nSat  Sun  Mon  Tue  Wed  Thu  Fri\n";
 
     $start_index = $self->start_index($yyyy, $mm);
-    $days = $self->days_in_year_month($yyyy, $mm);
+    $days = $self->days_in_month($yyyy, $mm);
     map { $calendar .= "     " } (1..$start_index);
     foreach (1 .. $days) 
     {
@@ -317,34 +318,16 @@ sub get_calendar
     return sprintf("%s\n\n", $calendar);
 }
 
-sub start_index
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
-    
-    $yyyy = $self->{yyyy} unless defined $yyyy;    
-    $mm   = $self->{mm}   unless defined $mm;
-    
-    my ($g_y, $g_m, $g_d) = $self->to_gregorian($yyyy, 1, 1);
-    my $dow = Day_of_Week($g_y, $g_m, $g_d);
-    
-    return $dow if $mm == 1;
-    my $days = $self->days_up_until_year_month($yyyy, $mm-1);
-    
-    for (1..$days)
-    {
-        if ($dow != 6)
-        {
-            $dow++;
-        }
-        else
-        {
-            $dow = 0;
-        }
-    }
-    return $dow
-}
+=head2 from_gregorian()
+
+Converts given Gregorian date to Hijri date.
+
+    use Calendar::Hijri;
+
+    my $calendar = Calendar::Hijri->new();
+    my ($yyyy, $mm, $dd) = $calendar->from_gregorian(2011, 3, 22);
+
+=cut
 
 sub from_gregorian
 {
@@ -355,6 +338,18 @@ sub from_gregorian
     
     return $self->from_julian(_gregorian_to_julian($yyyy, $mm, $dd));
 }
+
+
+=head2 to_gregorian()
+
+Converts Hijri date to Gregorian date.
+
+    use Calendar::Hijri;
+
+    my $calendar = Calendar::Hijri->new();
+    my ($yyyy, $mm, $dd) = $calendar->to_gregorian();
+
+=cut
 
 sub to_gregorian
 {
@@ -369,6 +364,17 @@ sub to_gregorian
     
     return _julian_to_gregorian($self->to_julian($yyyy, $mm, $dd));
 }
+
+=head2 to_julian()
+
+Converts Hijri date to Julian date.
+
+    use Calendar::Hijri;
+
+    my $calendar = Calendar::Hijri->new();
+    my $julian   = $calendar->to_julian();
+
+=cut
 
 sub to_julian
 {
@@ -399,6 +405,35 @@ sub from_julian
     my $dd   = ($julian - $self->to_julian($yyyy, $mm, 1)) + 1;
     
     return ($yyyy, $mm, $dd);
+}
+
+sub start_index
+{
+    my $self = shift;
+    my $yyyy = shift;
+    my $mm   = shift;
+    
+    $yyyy = $self->{yyyy} unless defined $yyyy;    
+    $mm   = $self->{mm}   unless defined $mm;
+    
+    my ($g_y, $g_m, $g_d) = $self->to_gregorian($yyyy, 1, 1);
+    my $dow = Day_of_Week($g_y, $g_m, $g_d);
+    
+    return $dow if $mm == 1;
+    my $days = $self->days_so_far($yyyy, $mm-1);
+    
+    for (1..$days)
+    {
+        if ($dow != 6)
+        {
+            $dow++;
+        }
+        else
+        {
+            $dow = 0;
+        }
+    }
+    return $dow
 }
 
 sub _gregorian_to_julian
@@ -497,8 +532,9 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-calendar-hijri at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Calendar-Hijri>.  
-I will be notified, and then you'll automatically be notified of progress on your bug as I make changes.
+the  web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Calendar-Hijri>. I will 
+be  notified ,  and  then  you'll  automatically be notified of progress on your bug as I make 
+changes.
 
 =head1 SUPPORT
 
@@ -532,15 +568,16 @@ L<http://search.cpan.org/dist/Calendar-Hijri/>
 
 Copyright 2011 Mohammad S Anwar.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+This  program  is  free  software; you can redistribute it and/or modify it under the terms of
+either :  the  GNU General Public License as published by the Free Software Foundation; or the 
+Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
 =head1 DISCLAIMER
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+This  program  is  distributed  in  the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 =cut
 
