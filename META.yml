@@ -21,7 +21,7 @@ name: Calendar-Hijri
 provides:
   Calendar::Hijri:
     file: lib/Calendar/Hijri.pm
-    version: 0.04
+    version: 0.05
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.04
+version: 0.05

@@ -1,5 +1,8 @@
 Revision history for Calendar-Hijri
 
+0.05    Tue Apr 19 10:52:34 2011
+        - Added description to the pod of method days_so_far().
+
 0.04    Tue Apr 19 09:21:13 2011
         - Fixed the typo in the description.
 

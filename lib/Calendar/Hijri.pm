@@ -9,11 +9,11 @@ Calendar::Hijri - Interface to Islamic Calendar.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Carp;
 use Readonly;
@@ -223,11 +223,14 @@ sub days_in_month
 
 =head2 days_so_far()
 
+Returns number of days before the 1st of given year and month of Hijri Calendar.
+
     use strict; use warnings;
     use Calendar::Hijri;
 
     my $calendar = Calendar::Hijri->new(1432, 7, 27);
-    print "Days before 01 Rajab 1432: " . $calendar->days_so_far() . "\n";
+    print "Days before 01 Rajab    1432: " . $calendar->days_so_far()        . "\n";
+    print "Days before 01 Ramadaan 1432: " . $calendar->days_so_far(1432, 9) . "\n";
 
 =cut
 
