@@ -1,5 +1,5 @@
 ---
-abstract: 'Interface to Islamic calendar.'
+abstract: 'Interface to Islamic Calendar.'
 author:
   - 'Mohammad S Anwar <mohammad.anwar@yahoo.com>'
 build_requires:
@@ -21,7 +21,7 @@ name: Calendar-Hijri
 provides:
   Calendar::Hijri:
     file: lib/Calendar/Hijri.pm
-    version: 0.03
+    version: 0.04
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.03
+version: 0.04
