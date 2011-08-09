@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.66.
+signed via the Module::Signature module, version 0.68.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,14 +14,14 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 9afa63d63a6b72083bb8d16d25a8f7c55921b10a Build.PL
-SHA1 6030d0d02b664bb536233e98c3d20c3db07bfd49 Changes
+SHA1 506e780410d899ced647b0a5ef9363eb9891b0be Build.PL
+SHA1 db3f806676c800867121038e286d4d3272635e6e Changes
 SHA1 0a770c5d5979293ffc613a07e54f524bdb99a035 MANIFEST
 SHA1 7d20e4e840781030202bb045d5ab81b3fd1b68b0 MANIFEST.SKIP
-SHA1 5f61f52d0dcec7f9861f51190898fb3944b6044a META.yml
-SHA1 7624730fea029de001af900c0b7d599b30840f27 Makefile.PL
-SHA1 d8aa507796d3c8267e0e6ef7482763363866557a README
-SHA1 9e10ecc79cec5f88bead40bcf470ab197e01b965 lib/Calendar/Hijri.pm
+SHA1 d10cd4871d016bb9928fc11d108fbddf42359900 META.yml
+SHA1 e1dfd39a519008505e27dcb986e1b49ef7822a9c Makefile.PL
+SHA1 5d02ee34fb48d8fa00102ec0020fd6d8701f61e1 README
+SHA1 afdc3c5beb4eaa99071de584650a869db49fffeb lib/Calendar/Hijri.pm
 SHA1 abcb7a1a1c6d98cda53e073f25453ae1aee4e8eb t/00-load.t
 SHA1 40fe34a36776be5beaeb7057e0c05559eafcdf18 t/01-test-case.t
 SHA1 2b8ffb7e4f399af95d092743846ac8d438f2c53e t/manifest.t
@@ -29,11 +29,11 @@ SHA1 0765c9ff0cc4319f415bb08d0053b7717a8284a2 t/pod.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.14 (MingW32)
 
-iQEcBAEBAgAGBQJNrVx2AAoJEPYcXBXhRYOhzdAH/3H9Qap2GRI0F2+yreEH6SrC
-eC4i4uLC8bYLy9JbAKtZjAL5bN9RJl5lxFIXYY6xEhmv6wXXOmkf0fCGXhyhYMjg
-JyAoB+a+OmQsnlXTnnYKYEzpQ9MxOY/nApn3FJfhG6Q5dmZjL9UkU9nYDtwMf3hI
-93vo4zP7xw6QnCnF3YbVcWwBbClVNEzhsYcMDk9QPYHuwj6MwFx8h150Bc0wtjDM
-BF6GmB53qzRu1ZE7A9jJSbTo35BOgIcuSZEX2y9dxqtn1Cxc3YGnH9niDc4JDr+f
-UUu+Dbaxb2nQXVVza/htijZlAv73ob+DLbPUjRZC+viiMFK8h/+7WF8q936CkKE=
-=U6yF
+iQEcBAEBAgAGBQJOQVCjAAoJEPYcXBXhRYOhEcEH/3MFUv7dd4N2ZBGQ4jjG5eE4
+HlB4X9fEBzaPHav0T0hVe9lB7fTFK4ZPEF7pqWLjiXtZg6jtHGOICbIgxC25LJBQ
+/ZHhhADCzUFUqw2gwoiATKgshO8mHC6G98zjPyRW/V8vDHKaUn+xFZKRGfpasx1e
+FYNXYAsg0jg+oS0PRUm6+d5bGKWily2EDox8xRx38tgUgJMS+f0e8DidFCS3IKgB
+eSirSFcoJAXZT1vajIywTMVvH5tcehc4F0wx8pRBIgc5Gjjd48w2mjpVmAVS5+yq
+FbHL2oZg8PdlP0f+mXsmaKizfK1qO39dYS6Eg+LzT1MZ/b+BcF9XYSLdCMlMPd8=
+=QPJO
 -----END PGP SIGNATURE-----

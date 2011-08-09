@@ -9,13 +9,13 @@ my $builder = Module::Build->new(
     dist_version_from => 'lib/Calendar/Hijri.pm',
     add_to_cleanup    => [ 'Calendar-Hijri-*' ],
     build_requires    => {
+        'Readonly'        => '1.03',
         'Test::More'      => 0,
-        'Readonly'        => 0,
-        'Module::Build'   => 0.36,
-        'Time::Local'     => 1.11,
-        'Time::localtime' => 1.02,
-        'List::Util'      => 1.21,
-        'Date::Calc'      => 5.7,
+        'Time::Local'     => '1.11',
+        'Time::localtime' => '1.02',
+        'List::Util'      => '1.21',
+        'Date::Calc'      => '5.7',
+        'Module::Build'   => '0.36',
     },
 );
 

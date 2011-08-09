@@ -1,7 +1,6 @@
 package Calendar::Hijri;
 
-use warnings;
-use strict;
+use strict; use warnings;
 
 =head1 NAME
 
@@ -9,11 +8,11 @@ Calendar::Hijri - Interface to Islamic Calendar.
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Carp;
 use Readonly;
