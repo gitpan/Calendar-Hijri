@@ -1,27 +1,19 @@
 ---
-abstract: 'Interface to Islamic Calendar.'
+abstract: "Interface to Islamic Calendar."
 author:
   - 'Mohammad S Anwar <mohammad.anwar@yahoo.com>'
-build_requires:
-  Date::Calc: 5.7
-  List::Util: 1.21
-  Module::Build: 0.36
-  Readonly: 1.03
-  Test::More: 0
-  Time::Local: 1.11
-  Time::localtime: 1.02
-configure_requires:
-  Module::Build: 0.36
-generated_by: 'Module::Build version 0.3607'
-license: perl
+build_requires: {}
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.141520'
+license: artistic_2
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Calendar-Hijri
-provides:
-  Calendar::Hijri:
-    file: lib/Calendar/Hijri.pm
-    version: 0.06
+no_index:
+  directory:
+    - t
+    - inc
 resources:
-  license: http://dev.perl.org/licenses/
-version: 0.06
+  repository: https://github.com/Manwar/Calendar-Hijri.git
+version: '0.07'

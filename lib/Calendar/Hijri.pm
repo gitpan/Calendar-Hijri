@@ -1,6 +1,6 @@
 package Calendar::Hijri;
 
-use strict; use warnings;
+$Calendar::Hijri::VERSION = '0.07';
 
 =head1 NAME
 
@@ -8,14 +8,10 @@ Calendar::Hijri - Interface to Islamic Calendar.
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
-
-use Carp;
-use Readonly;
 use Time::Local;
 use Data::Dumper;
 use Time::localtime;
@@ -23,33 +19,26 @@ use List::Util qw/min/;
 use POSIX qw/floor ceil/;
 use Date::Calc qw/Delta_Days Day_of_Week Add_Delta_Days/;
 
-Readonly my $ISLAMIC_EPOCH   => 1948439.5;
-Readonly my $GREGORIAN_EPOCH => 1721425.5;
+my $ISLAMIC_EPOCH   = 1948439.5;
+my $GREGORIAN_EPOCH = 1721425.5;
 
-Readonly my $MONTHS =>
-[
+my $MONTHS = [
     undef,
     q/Muharram/, q/Safar/   , q/Rabi' al-awwal/, q/Rabi' al-thani/, q/Jumada al-awwal/,  q/Jumada al-thani/,
-    q/Rajab/   , q/Sha'aban/, q/Ramadan/       , q/Shawwal/       , q/Dhu al-Qi'dah/   , q/Dhu al-Hijjah/  ,
-];
+    q/Rajab/   , q/Sha'aban/, q/Ramadan/       , q/Shawwal/       , q/Dhu al-Qi'dah/   , q/Dhu al-Hijjah/   ];
 
-Readonly my $LEAP_YEAR_MOD  => [ 2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29 ];
+my $LEAP_YEAR_MOD  = [ 2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29 ];
 
-sub new 
-{
-    my $class = shift;
-    my $yyyy  = shift;
-    my $mm    = shift;
-    my $dd    = shift;
+sub new {
+    my ($class, $yyyy, $mm, $dd) = @_;
+
     my $self  = {};
     bless $self, $class;
 
-    if (defined($yyyy) && defined($mm) && defined($dd))
-    {
+    if (defined($yyyy) && defined($mm) && defined($dd)) {
         _validate_date($yyyy, $mm, $dd)
     }
-    else
-    {
+    else {
         ($yyyy, $mm, $dd) = $self->today();
     }
 
@@ -62,16 +51,17 @@ sub new
 
 =head1 DESCRIPTION
 
-Hijri Calendar begins with the migration from Mecca to Medina of Mohammad (pbuh),  the Prophet
-of Islam, an event  known  as the Hegira. The initials A.H.  before a date mean "anno Hegirae"
-or "after Hegira".  The  first  day  of the year is fixed in the Quran as the first day of the
-month of Muharram. In 17 AH Umar I, the second caliph, established the beginning of the era of
-the Hegira (1 Muharram 1 AH) as the date that is 16 July 622 CE in the Julian Calendar.
+Hijri Calendar begins with the migration from Mecca to Medina of Mohammad (pbuh),
+the Prophet of Islam, an event  known  as the Hegira. The initials A.H.  before a
+date mean "anno Hegirae" or "after Hegira". The  first  day  of the year is fixed
+in the Quran as the first day of the month of Muharram.In 17 AH Umar I,the second
+caliph, established the beginning of the era of the Hegira ( 1 Muharram 1 AH ) as
+the date that is 16 July 622 CE in the Julian Calendar.
 
-The  years are lunar and consist of 12 lunar months. There is no intercalary period, since the
-Quran ( Sura IX, verses 36,37 )  sets  the calendar year at 12 months. Because the year in the
-Hijri  calendar is shorter than a solar year, the months drift with respect to the seasons, in
-a cycle 32.50 years.
+The years are lunar & consist of 12 lunar months. There is no intercalary period,
+since the Quran ( Sura IX, verses 36,37 )  sets  the calendar year  at 12 months.
+Because the year in the Hijri  calendar is shorter than a solar year, the  months
+drift with respect to the seasons, in a cycle 32.50 years.
 
 NOTE: The Hijri date produced by this module can have +1/-1 day error.
 
@@ -109,11 +99,11 @@ Return today's date is Hijri Calendar as list in the format yyyy,mm,dd.
 
 =cut
 
-sub today
-{
-    my $self  = shift;
-    my $today = localtime; 
-    
+sub today {
+    my ($self) = @_;
+
+    my $today = localtime;
+
     return $self->from_gregorian($today->year+1900, $today->mon+1, $today->mday);
 }
 
@@ -129,9 +119,9 @@ Return Hijri date in human readable format.
 
 =cut
 
-sub as_string
-{
-    my $self = shift;
+sub as_string {
+    my ($self) = @_;
+
     return sprintf("%02d, %s %04d", $self->{dd}, $MONTHS->[$self->{mm}], $self->{yyyy});
 }
 
@@ -151,10 +141,9 @@ Return 1 or 0 depending on whether the given year is a leap year or not in Hijri
 
 =cut
 
-sub is_leap_year
-{
-    my $self = shift;
-    my $yyyy = shift;
+sub is_leap_year {
+    my ($self, $yyyy) = @_;
+
     $yyyy = $self->{yyyy} unless defined $yyyy;
 
     return unless defined $yyyy;
@@ -176,10 +165,9 @@ Returns the number of days in the given year of Hijri Calendar.
 
 =cut
 
-sub days_in_year
-{
-    my $self = shift;
-    my $yyyy = shift;
+sub days_in_year {
+    my ($self, $yyyy) = @_;
+
     $yyyy = $self->{yyyy} unless defined $yyyy;
 
     return unless defined $yyyy;
@@ -205,11 +193,8 @@ Return number of days in the given year and month of Hijri Calendar.
 
 =cut
 
-sub days_in_month
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
+sub days_in_month {
+    my ($self, $yyyy, $mm) = @_;
 
     $mm = $self->{mm}     unless defined $mm;
     $yyyy = $self->{yyyy} unless defined $yyyy;
@@ -233,21 +218,18 @@ Returns number of days before the 1st of given year and month of Hijri Calendar.
 
 =cut
 
-sub days_so_far
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
+sub days_so_far {
+    my ($self, $yyyy, $mm) = @_;
 
     $mm   = $self->{mm}   unless defined $mm;
     $yyyy = $self->{yyyy} unless defined $yyyy;
     return unless (defined($mm) && defined($yyyy));
 
     my $days = 0;
-    foreach (1..$mm) 
-    {
+    foreach (1..$mm) {
         $days += $self->days_in_month($yyyy, $_);
     }
+
     return $days;
 }
 
@@ -262,13 +244,8 @@ Returns new date in Hijri Calendar after adding the given number of day(s) to th
 
 =cut
 
-sub add_day
-{
-    my $self  = shift;
-    my $day   = shift;
-    my $dd    = shift;
-    my $mm    = shift;
-    my $yyyy  = shift;
+sub add_day {
+    my ($self, $day, $dd, $mm, $yyyy) = @_;
 
     $dd   = $self->{dd}   unless defined $dd;
     $mm   = $self->{mm}   unless defined $mm;
@@ -276,10 +253,10 @@ sub add_day
 
     return unless (defined($dd) && defined($mm) && defined($yyyy));
 
-    foreach (1..$day)
-    {
+    foreach (1..$day) {
         ($dd, $mm, $yyyy) = _add_day($self->days_in_month($yyyy, $mm), $dd, $mm, $yyyy);
     }
+
     return ($dd, $mm, $yyyy);
 }
 
@@ -296,13 +273,10 @@ would return current month Hijri Calendar.
 
 =cut
 
-sub get_calendar
-{
-    my $self = shift;
-    my $yyyy = shift;    
-    my $mm   = shift;
+sub get_calendar {
+    my ($self, $yyyy, $mm) = @_;
 
-    $yyyy = $self->{yyyy} unless defined $yyyy;    
+    $yyyy = $self->{yyyy} unless defined $yyyy;
     $mm   = $self->{mm}   unless defined $mm;
 
     my ($calendar, $start_index, $days);
@@ -312,11 +286,11 @@ sub get_calendar
     $start_index = $self->start_index($yyyy, $mm);
     $days = $self->days_in_month($yyyy, $mm);
     map { $calendar .= "     " } (1..$start_index);
-    foreach (1 .. $days) 
-    {
+    foreach (1 .. $days) {
         $calendar .= sprintf("%3d  ", $_);
         $calendar .= "\n" unless (($start_index+$_)%7);
     }
+
     return sprintf("%s\n\n", $calendar);
 }
 
@@ -331,12 +305,8 @@ Converts given Gregorian date to Hijri date.
 
 =cut
 
-sub from_gregorian
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
-    my $dd   = shift;
+sub from_gregorian {
+    my ($self, $yyyy, $mm, $dd) = @_;
 
     return $self->from_julian(_gregorian_to_julian($yyyy, $mm, $dd));
 }
@@ -353,12 +323,8 @@ Converts Hijri date to Gregorian date.
 
 =cut
 
-sub to_gregorian
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
-    my $dd   = shift;
+sub to_gregorian {
+    my ($self, $yyyy, $mm, $dd) = @_;
 
     $yyyy = $self->{yyyy} unless defined $yyyy;
     $mm   = $self->{mm}   unless defined $mm;
@@ -378,12 +344,8 @@ Converts Hijri date to Julian date.
 
 =cut
 
-sub to_julian
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
-    my $dd   = shift;
+sub to_julian {
+    my ($self, $yyyy, $mm, $dd) = @_;
 
     $yyyy = $self->{yyyy} unless defined $yyyy;
     $mm   = $self->{mm}   unless defined $mm;
@@ -396,10 +358,8 @@ sub to_julian
             $ISLAMIC_EPOCH) - 1;
 }
 
-sub from_julian
-{
-    my $self   = shift;
-    my $julian = shift;
+sub from_julian {
+    my ($self, $julian) = @_;
 
     $julian = floor($julian) + 0.5;
     my $yyyy = floor(((30 * ($julian - $ISLAMIC_EPOCH)) + 10646) / 10631);
@@ -409,13 +369,10 @@ sub from_julian
     return ($yyyy, $mm, $dd);
 }
 
-sub start_index
-{
-    my $self = shift;
-    my $yyyy = shift;
-    my $mm   = shift;
+sub start_index {
+    my ($self, $yyyy, $mm) = @_;
 
-    $yyyy = $self->{yyyy} unless defined $yyyy;    
+    $yyyy = $self->{yyyy} unless defined $yyyy;
     $mm   = $self->{mm}   unless defined $mm;
 
     my ($g_y, $g_m, $g_d) = $self->to_gregorian($yyyy, 1, 1);
@@ -424,25 +381,20 @@ sub start_index
     return $dow if $mm == 1;
     my $days = $self->days_so_far($yyyy, $mm-1);
 
-    for (1..$days)
-    {
-        if ($dow != 6)
-        {
+    for (1..$days) {
+        if ($dow != 6) {
             $dow++;
         }
-        else
-        {
+        else {
             $dow = 0;
         }
     }
+
     return $dow
 }
 
-sub _gregorian_to_julian
-{
-    my $yyyy = shift;
-    my $mm   = shift;
-    my $dd   = shift;
+sub _gregorian_to_julian {
+    my ($yyyy, $mm, $dd) = @_;
 
     return ($GREGORIAN_EPOCH - 1) +
            (365 * ($yyyy - 1)) +
@@ -454,9 +406,8 @@ sub _gregorian_to_julian
            $dd);
 }
 
-sub _julian_to_gregorian
-{
-    my $julian = shift;
+sub _julian_to_gregorian {
+    my ($julian) = @_;
 
     my $wjd        = floor($julian - 0.5) + 0.5;
     my $depoch     = $wjd - $GREGORIAN_EPOCH;
@@ -479,21 +430,17 @@ sub _julian_to_gregorian
     return ($yyyy, $mm, $dd);
 }
 
-sub _is_leap
-{
-    my $yyyy = shift;
+sub _is_leap {
+    my ($yyyy) = @_;
 
     return (($yyyy % 4) == 0) &&
             (!((($yyyy % 100) == 0) && (($yyyy % 400) != 0)));
 }
 
 # days: Total number of days in the given month mm.
-sub _add_day
-{
-    my $days = shift;
-    my $dd   = shift;
-    my $mm   = shift;
-    my $yyyy = shift;
+sub _add_day {
+    my ($days, $dd, $mm, $yyyy) = @_;
+
     return unless (defined($dd) && defined($mm) && defined($yyyy));
 
     $dd++;
@@ -513,17 +460,14 @@ sub _add_day
     return ($dd, $mm, $yyyy);
 }
 
-sub _validate_date
-{
-    my $yyyy = shift;
-    my $mm   = shift;
-    my $dd   = shift;
+sub _validate_date {
+    my ($yyyy, $mm, $dd) = @_;
 
-    croak("ERROR: Invalid year [$yyyy].\n")
+    die("ERROR: Invalid year [$yyyy].\n")
         unless (defined($yyyy) && ($yyyy =~ /^\d{4}$/) && ($yyyy > 0));
-    croak("ERROR: Invalid month [$mm].\n")
+    die("ERROR: Invalid month [$mm].\n")
         unless (defined($mm) && ($mm =~ /^\d{1,2}$/) && ($mm >= 1) && ($mm <= 12));
-    croak("ERROR: Invalid day [$dd].\n")
+    die("ERROR: Invalid day [$dd].\n")
         unless (defined($dd) && ($dd =~ /^\d{1,2}$/) && ($dd >= 1) && ($dd <= 30));
 }
 
@@ -531,12 +475,16 @@ sub _validate_date
 
 Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
+=head1 REPOSITORY
+
+L<https://github.com/Manwar/Calendar-Hijri>
+
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-calendar-hijri at rt.cpan.org>, or through
-the  web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Calendar-Hijri>. I will
-be  notified ,  and  then  you'll  automatically be notified of progress on your bug as I make
-changes.
+Please report any bugs / feature requests to C<bug-calendar-hijri at rt.cpan.org>
+or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Calendar-Hijri>.
+I will be notified, and then you'll automatically be notified of progress on your
+bug as I make changes.
 
 =head1 SUPPORT
 
@@ -568,18 +516,41 @@ L<http://search.cpan.org/dist/Calendar-Hijri/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011 Mohammad S Anwar.
+Copyright 2011 - 2014 Mohammad S Anwar.
 
-This  program  is  free  software; you can redistribute it and/or modify it under the terms of
-either :  the  GNU General Public License as published by the Free Software Foundation; or the
-Artistic License.
+This  program  is  free software; you can redistribute it and/or modify it under
+the  terms  of the the Artistic License (2.0). You may obtain a copy of the full
+license at:
 
-See http://dev.perl.org/licenses/ for more information.
+L<http://www.perlfoundation.org/artistic_license_2_0>
 
-=head1 DISCLAIMER
+Any  use,  modification, and distribution of the Standard or Modified Versions is
+governed by this Artistic License.By using, modifying or distributing the Package,
+you accept this license. Do not use, modify, or distribute the Package, if you do
+not accept this license.
 
-This  program  is  distributed  in  the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+If your Modified Version has been derived from a Modified Version made by someone
+other than you,you are nevertheless required to ensure that your Modified Version
+ complies with the requirements of this license.
+
+This  license  does  not grant you the right to use any trademark,  service mark,
+tradename, or logo of the Copyright Holder.
+
+This license includes the non-exclusive, worldwide, free-of-charge patent license
+to make,  have made, use,  offer to sell, sell, import and otherwise transfer the
+Package with respect to any patent claims licensable by the Copyright Holder that
+are  necessarily  infringed  by  the  Package. If you institute patent litigation
+(including  a  cross-claim  or  counterclaim) against any party alleging that the
+Package constitutes direct or contributory patent infringement,then this Artistic
+License to you shall terminate on the date that such litigation is filed.
+
+Disclaimer  of  Warranty:  THE  PACKAGE  IS  PROVIDED BY THE COPYRIGHT HOLDER AND
+CONTRIBUTORS  "AS IS'  AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES. THE IMPLIED
+WARRANTIES    OF   MERCHANTABILITY,   FITNESS   FOR   A   PARTICULAR  PURPOSE, OR
+NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY YOUR LOCAL LAW. UNLESS
+REQUIRED BY LAW, NO COPYRIGHT HOLDER OR CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL,  OR CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE
+OF THE PACKAGE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
